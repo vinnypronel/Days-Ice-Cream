@@ -71,4 +71,13 @@ body {
 ::-webkit-scrollbar-track { background: var(--color-base); }
 ::-webkit-scrollbar-thumb { background: var(--color-surface); border-radius: 3px; }
 
+/* ─── Logo Hover Effect ─── */
+.logo-hover {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+.logo-hover:hover {
+  transform: scale(1.08);
+}
+
 

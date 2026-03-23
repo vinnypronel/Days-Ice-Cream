@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import RippleButton from "./RippleButton";
 
 const navLinks = [
   { label: "Flavors", href: "/flavors" },
@@ -41,6 +42,7 @@ function navLinkStyle(hovered: boolean): React.CSSProperties {
 
 export default function Navbar() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [logoHovered, setLogoHovered] = useState(false);
 
   return (
     <header
@@ -61,18 +63,29 @@ export default function Navbar() {
           alignItems: "center",
           justifyContent: "flex-start",
           gap: "40px",
-          padding: "10px 24px",
+          padding: "2px 24px",
         }}
       >
         {/* Logo */}
-        <Link href="/" aria-label="Day's Ice Cream — home" style={{ flexShrink: 0, display: "flex" }}>
+        <Link
+          href="/"
+          aria-label="Day's Ice Cream — home"
+          style={{
+            flexShrink: 0,
+            display: "flex",
+            transition: "transform 0.3s ease",
+            transform: logoHovered ? "scale(1.1)" : "scale(1)",
+          }}
+          onMouseEnter={() => setLogoHovered(true)}
+          onMouseLeave={() => setLogoHovered(false)}
+        >
           <Image
             src="/Days Logo.png"
             alt="Day's Ice Cream — Since 1876"
-            width={60}
-            height={60}
+            width={140}
+            height={140}
             priority
-            style={{ width: "60px", height: "auto" }}
+            style={{ width: "135px", height: "auto" }}
           />
         </Link>
 
@@ -93,26 +106,16 @@ export default function Navbar() {
         </ul>
 
         {/* CTA button */}
-        <Link
+        <RippleButton
+          variant="primary"
           href="/flavors"
           style={{
             marginLeft: "auto",
-            background: "var(--color-accent)",
-            color: "var(--color-base)",
-            fontFamily: "var(--font-lora), serif",
-            fontSize: "12px",
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            padding: "10px 20px",
-            fontWeight: 600,
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textDecoration: "none",
+            padding: "8px 20px",
           }}
         >
           See the Menu
-        </Link>
+        </RippleButton>
       </nav>
     </header>
   );

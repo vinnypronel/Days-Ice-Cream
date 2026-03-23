@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import RippleButton from "./RippleButton";
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -103,27 +104,20 @@ export default function ContactForm() {
         <textarea id="message" name="message" rows={4} required style={{ ...inputStyle, resize: "vertical" }}></textarea>
       </div>
 
-      <button
+      <RippleButton
         type="submit"
+        variant="primary"
         disabled={isSubmitting}
         style={{
           marginTop: "48px",
-          background: "var(--color-accent)",
-          color: "var(--color-base)",
-          fontFamily: "var(--font-lora), serif",
-          fontSize: "12px",
-          letterSpacing: "0.16em",
-          textTransform: "uppercase",
-          padding: "16px 40px",
-          fontWeight: 600,
-          border: "none",
-          cursor: isSubmitting ? "not-allowed" : "pointer",
           width: "100%",
+          padding: "16px 40px",
           opacity: isSubmitting ? 0.7 : 1,
+          cursor: isSubmitting ? "not-allowed" : "pointer",
         }}
       >
         {isSubmitting ? "Sending..." : "Send Message"}
-      </button>
+      </RippleButton>
     </form>
   );
 }

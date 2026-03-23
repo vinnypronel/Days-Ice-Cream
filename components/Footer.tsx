@@ -40,6 +40,7 @@ function footerLinkStyle(hovered: boolean): React.CSSProperties {
 
 export default function Footer() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [logoHovered, setLogoHovered] = useState(false);
 
   return (
     <footer
@@ -55,13 +56,23 @@ export default function Footer() {
       <div style={{ maxWidth: "960px", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: "28px" }}>
 
         {/* Logo */}
-        <Link href="/" aria-label="Day's Ice Cream — home" style={{ display: "flex" }}>
+        <Link
+          href="/"
+          aria-label="Day's Ice Cream — home"
+          style={{
+            display: "flex",
+            transition: "transform 0.3s ease",
+            transform: logoHovered ? "scale(1.1)" : "scale(1)",
+          }}
+          onMouseEnter={() => setLogoHovered(true)}
+          onMouseLeave={() => setLogoHovered(false)}
+        >
           <Image
             src="/Days Logo.png"
             alt="Day's Ice Cream — Since 1876"
-            width={80}
-            height={80}
-            style={{ filter: "brightness(0) invert(1)", opacity: 0.9, width: "72px", height: "auto" }}
+            width={120}
+            height={120}
+            style={{ filter: "brightness(0) invert(1)", opacity: 0.9, width: "115px", height: "auto" }}
           />
         </Link>
 

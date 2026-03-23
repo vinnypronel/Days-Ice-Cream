@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import RippleButton from "@/components/RippleButton";
 
 export const metadata: Metadata = {
   title: "Our Story — Day's Ice Cream | Since 1876, Ocean Grove NJ",
@@ -9,7 +11,6 @@ export const metadata: Metadata = {
     "Learn the history of Day's Ice Cream — Ocean Grove's oldest continuously operating business, founded in 1876 by brothers William F. and Pennington Day, and now entering a new chapter under new ownership.",
 };
 
-/* ─── Ornamental divider ─── */
 function OrnamentDots() {
   return (
     <div aria-hidden="true" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px" }}>
@@ -17,6 +18,36 @@ function OrnamentDots() {
       <span style={{ color: "var(--color-accent)", fontSize: "20px", userSelect: "none" }}>✦</span>
       <span style={{ background: "var(--color-accent)", opacity: 0.35, display: "block", height: "1px", width: "96px" }} />
     </div>
+  );
+}
+
+/* ─── Vintage Photo Wrapper ─── */
+function VintagePhoto({ src, alt, rotate = 0, style = {} }: { src: string, alt: string, rotate?: number, style?: React.CSSProperties }) {
+  return (
+    <figure
+      style={{ 
+        margin: 0,
+        padding: "12px",
+        background: "#FDFFFC", 
+        border: "1px solid #546A76", 
+        boxShadow: "4px 6px 14px rgba(2, 1, 0, 0.12)", 
+        borderRadius: "3px", 
+        display: "inline-block",
+        transform: `rotate(${rotate}deg)`,
+        transition: "transform 0.4s ease",
+        ...style
+      }}
+    >
+      <div style={{ border: "1px solid #020100", overflow: "hidden", borderRadius: "1px" }}>
+        <Image 
+          src={src} 
+          alt={alt} 
+          width={894} 
+          height={714} 
+          style={{ display: "block", width: "100%", height: "auto" }} 
+        />
+      </div>
+    </figure>
   );
 }
 
@@ -42,7 +73,7 @@ function AboutHero() {
         background: "var(--color-base)",
         position: "relative",
         overflow: "hidden",
-        padding: "112px 24px",
+        padding: "64px 24px",
         textAlign: "center",
         width: "100%",
       }}
@@ -54,14 +85,14 @@ function AboutHero() {
 
       {/* Centered content column */}
       <div style={{ position: "relative", maxWidth: "720px", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "24px" }}>
+        <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "12px" }}>
           Ocean Grove, NJ — Est. 1876
         </p>
-        <h1 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "clamp(44px, 7vw, 82px)", lineHeight: 1.05, marginBottom: "32px" }}>
+        <h1 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "clamp(44px, 7vw, 82px)", lineHeight: 1.05, marginBottom: "16px" }}>
           Our Story
         </h1>
         <OrnamentDots />
-        <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "clamp(16px, 2vw, 19px)", lineHeight: 1.85, opacity: 0.8, maxWidth: "560px", marginTop: "32px" }}>
+        <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "clamp(16px, 2vw, 19px)", lineHeight: 1.85, opacity: 0.8, maxWidth: "560px", marginTop: "24px" }}>
           Ocean Grove&rsquo;s oldest continuously operating business. A parlor
           that has outlasted two World Wars, the Roaring Twenties, the Great
           Depression, and every Jersey Shore summer in between.
@@ -76,9 +107,9 @@ function AboutHero() {
 ════════════════════════════════════════════════════════════ */
 function OpeningNarrative() {
   return (
-    <section id="opening" aria-label="Opening story" style={{ background: "var(--color-warm-white)", width: "100%", padding: "96px 24px" }}>
+    <section id="opening" aria-label="Opening story" style={{ background: "var(--color-warm-white)", width: "100%", padding: "56px 24px" }}>
       <div style={{ maxWidth: "700px", margin: "0 auto", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <p style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-base)", fontSize: "clamp(22px, 3.5vw, 34px)", lineHeight: 1.5, marginBottom: "40px" }}>
+        <p style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-base)", fontSize: "clamp(22px, 3.5vw, 34px)", lineHeight: 1.5, marginBottom: "24px" }}>
           &ldquo;Delicious and Unique. A Step Back in Time.&rdquo;
         </p>
         <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-surface)", fontSize: "17px", lineHeight: 1.9, opacity: 0.88, marginBottom: "24px" }}>
@@ -95,6 +126,12 @@ function OpeningNarrative() {
           to be eaten slowly, outside, in the middle of a summer that feels like
           it might last forever.
         </p>
+
+        {/* Photo Spread */}
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", gap: "24px", marginTop: "56px", width: "100%", flexWrap: "wrap", alignItems: "flex-start" }}>
+          <VintagePhoto src="/oldoutsideshot.jpg" alt="Old outside shot of Day's Ice Cream" rotate={-2.5} style={{ width: "320px", maxWidth: "100%" }} />
+          <VintagePhoto src="/windowlogo.jpg" alt="Vintage Day's Ice Cream window painting" rotate={2} style={{ width: "290px", maxWidth: "100%", marginTop: "32px", zIndex: 1 }} />
+        </div>
       </div>
     </section>
   );
@@ -105,10 +142,10 @@ function OpeningNarrative() {
 ════════════════════════════════════════════════════════════ */
 function Timeline() {
   return (
-    <section id="timeline" aria-label="Historical timeline" style={{ background: "var(--color-base)", width: "100%", padding: "112px 24px" }}>
+    <section id="timeline" aria-label="Historical timeline" style={{ background: "var(--color-base)", width: "100%", padding: "80px 24px" }}>
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "80px" }}>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
           <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "16px" }}>
             150 Years of History
           </p>
@@ -150,14 +187,14 @@ function Timeline() {
 ════════════════════════════════════════════════════════════ */
 function NewOwnership() {
   return (
-    <section id="new-chapter" aria-label="New ownership" style={{ background: "var(--color-surface)", width: "100%", padding: "112px 24px" }}>
+    <section id="new-chapter" aria-label="New ownership" style={{ background: "var(--color-surface)", width: "100%", padding: "80px 24px" }}>
       <div style={{ maxWidth: "720px", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
 
         <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "20px" }}>
           New Ownership — Same Promise
         </p>
 
-        <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "clamp(28px, 4.5vw, 54px)", lineHeight: 1.1, marginBottom: "40px" }}>
+        <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "clamp(28px, 4.5vw, 54px)", lineHeight: 1.1, marginBottom: "24px" }}>
           We Didn&rsquo;t Buy a Business.<br />We Accepted a Responsibility.
         </h2>
 
@@ -187,13 +224,19 @@ function NewOwnership() {
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center", marginTop: "48px" }}>
-          <Link href="/menu" style={{ background: "var(--color-accent)", color: "var(--color-base)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase", padding: "14px 32px", fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+        {/* Editorial Photo Spread */}
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", gap: "32px", marginTop: "72px", flexWrap: "wrap", alignItems: "center" }}>
+          <VintagePhoto src="/drawing.jpg" alt="Historical drawing of Day's" rotate={1.5} style={{ width: "330px", maxWidth: "100%" }} />
+          <VintagePhoto src="/insideshop.jpg" alt="Inside the ice cream shop" rotate={-1.5} style={{ width: "310px", maxWidth: "100%", marginTop: "-20px", marginLeft: "-16px", zIndex: 1 }} />
+        </div>
+
+        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center", marginTop: "72px" }}>
+          <RippleButton variant="primary" href="/menu" style={{ padding: "14px 32px" }}>
             See the Menu
-          </Link>
-          <Link href="/contact" style={{ color: "var(--color-accent)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase", border: "1px solid rgba(201,168,124,0.3)", padding: "14px 32px", display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+          </RippleButton>
+          <RippleButton variant="outline" href="/contact" style={{ padding: "14px 32px" }}>
             Visit Us
-          </Link>
+          </RippleButton>
         </div>
       </div>
     </section>
@@ -212,7 +255,7 @@ function FlavorsNote() {
   ];
 
   return (
-    <section id="flavors-note" aria-label="Flavors overview" style={{ background: "var(--color-base)", width: "100%", padding: "96px 24px" }}>
+    <section id="flavors-note" aria-label="Flavors overview" style={{ background: "var(--color-base)", width: "100%", padding: "80px 24px" }}>
       <div style={{ maxWidth: "960px", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
         <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "16px" }}>
           Something for Everyone
@@ -253,7 +296,7 @@ function FlavorsNote() {
 ════════════════════════════════════════════════════════════ */
 function LocationNote() {
   return (
-    <section id="location-note" aria-label="Location" style={{ background: "var(--color-warm-white)", width: "100%", padding: "80px 24px", textAlign: "center" }}>
+    <section id="location-note" aria-label="Location" style={{ background: "var(--color-warm-white)", width: "100%", padding: "64px 24px", textAlign: "center" }}>
       <div style={{ maxWidth: "560px", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
         <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-surface)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", opacity: 0.65, marginBottom: "20px" }}>
           Where to Find Us
@@ -268,9 +311,9 @@ function LocationNote() {
         <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-surface)", fontSize: "15px", lineHeight: 1.8, opacity: 0.6, fontStyle: "italic", marginBottom: "40px" }}>
           Serving May through October. Open seven days a week,<br />Memorial Day through Labor Day.
         </p>
-        <Link href="/contact" style={{ background: "var(--color-base)", color: "var(--color-cream)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase", padding: "14px 32px", fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+        <RippleButton variant="dark" href="/contact" style={{ padding: "14px 32px" }}>
           Get Directions &amp; Hours
-        </Link>
+        </RippleButton>
       </div>
     </section>
   );

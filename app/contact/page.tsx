@@ -84,7 +84,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right Column: Info & Map */}
-          <div style={{ display: "flex", flexDirection: "column", background: "var(--color-surface)", padding: "48px 32px", border: "1px solid rgba(201,168,124,0.15)" }}>
+          <div style={{ display: "flex", flexDirection: "column", background: "var(--color-surface)", padding: "48px 32px", border: "2px solid var(--color-accent)", borderRadius: "16px" }}>
             
             <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "32px", marginBottom: "32px" }}>Visit Us</h2>
             
@@ -129,7 +129,7 @@ export default function ContactPage() {
             </div>
 
             {/* Google Maps iframe */}
-            <div style={{ width: "100%", height: "240px", background: "var(--color-base)", position: "relative" }}>
+            <div style={{ width: "100%", height: "240px", background: "var(--color-base)", position: "relative", border: "2px solid var(--color-accent)", borderRadius: "12px", overflow: "hidden" }}>
               <iframe
                 title="Google Maps: Day's Ice Cream"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3043.606214151978!2d-74.00843282367807!3d40.217835871473216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2263cd319f3cb%3A0xc34a6ca7c3cc17f0!2s48%20Pitman%20Ave%2C%20Ocean%20Grove%2C%20NJ%2007756!5e0!3m2!1sen!2sus!4v1716301234567!5m2!1sen!2sus"

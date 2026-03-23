@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import RippleButton from "@/components/RippleButton";
 
 /* ─── Shared ornamental divider ─── */
 function OrnamentDots() {
@@ -66,9 +67,9 @@ function HeroSection() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         overflow: "visible",
-        padding: "20px 24px 40px",
+        padding: "20px 24px 12vh",
         textAlign: "center",
         backgroundImage: "url('/background.png')",
         backgroundSize: "cover",
@@ -77,43 +78,41 @@ function HeroSection() {
       }}
     >
       {/* Dark tint overlay */}
-      <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)", pointerEvents: "none" }} />
+      <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.3)", pointerEvents: "none" }} />
       {/* Glow */}
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 50% at 50% 60%, rgba(201,168,124,0.09) 0%, transparent 70%)", pointerEvents: "none" }} />
       {/* Grain */}
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, opacity: 0.03, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`, backgroundRepeat: "repeat", pointerEvents: "none" }} />
 
       <div style={{ position: "relative", maxWidth: "700px", width: "100%", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "8px" }}>
+        <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "4px", fontWeight: "bold" }}>
           Ocean Grove, New Jersey — Est. 1876
         </p>
 
         <Image
           src="/Days Logo.png"
           alt="Day's Ice Cream — Since 1876"
-          width={340}
-          height={340}
+          width={400}
+          height={400}
           priority
-          style={{ opacity: 0.97, width: "clamp(220px, 30vw, 380px)", height: "auto", marginBottom: "12px", marginTop: "0px", filter: "drop-shadow(0 0 3px rgba(255,255,255,0.65))" }}
+          style={{ 
+            opacity: 0.97, 
+            width: "clamp(220px, 32vw, 420px)", 
+            height: "auto", 
+            marginBottom: "12px", 
+            marginTop: "0px", 
+            filter: "drop-shadow(0 0 3px rgba(255,255,255,0.65))" 
+          }}
         />
 
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "24px", flexWrap: "wrap", justifyContent: "center", marginBottom: "20px" }}>
-          <Link href="/flavors" id="hero-cta-menu" style={{ background: "var(--color-accent)", color: "var(--color-base)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase", padding: "14px 32px", fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none", opacity: 1 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", justifyContent: "center", marginBottom: "0px" }}>
+          <RippleButton variant="primary" href="/flavors" id="hero-cta-menu" style={{ padding: "14px 32px" }}>
             Explore the Menu
-          </Link>
-          <Link href="/about" id="hero-cta-story" style={{ color: "var(--color-accent)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase", borderBottom: "1px solid rgba(201,168,124,0.4)", paddingBottom: "2px", display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
+          </RippleButton>
+          <RippleButton variant="mint" href="/about" id="hero-cta-story" style={{ padding: "14px 20px" }}>
             Our Story <span aria-hidden="true">→</span>
-          </Link>
+          </RippleButton>
         </div>
-
-        <h1 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "clamp(32px, 5vw, 58px)", lineHeight: 1.1, marginBottom: "16px" }}>
-          150 Years<br />of Pure Happiness
-        </h1>
-
-        <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "clamp(15px, 2vw, 18px)", lineHeight: 1.75, opacity: 0.82, marginBottom: "40px", maxWidth: "480px" }}>
-          Handcrafted ice cream scooped from the same corner since 1876.
-          Some things are worth keeping exactly as they are.
-        </p>
       </div>
     </section>
   );
@@ -184,7 +183,24 @@ function OurStoryTeaser() {
 
         {/* Left: decorative year */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-          <span aria-hidden="true" style={{ fontFamily: "var(--font-rozha), Georgia, serif", fontSize: "clamp(80px, 12vw, 160px)", color: "var(--color-surface)", lineHeight: 1, letterSpacing: "-0.02em", userSelect: "none" }}>1876</span>
+          {/* Large masked logo in pink */}
+          <div 
+            aria-hidden="true"
+            style={{ 
+              width: "clamp(240px, 35vw, 420px)", 
+              height: "clamp(120px, 18vw, 220px)", 
+              backgroundColor: "var(--color-accent)",
+              maskImage: "url('/Days Logo.png')",
+              maskRepeat: "no-repeat",
+              maskPosition: "center",
+              maskSize: "contain",
+              WebkitMaskImage: "url('/Days Logo.png')",
+              WebkitMaskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              WebkitMaskSize: "contain",
+              userSelect: "none"
+            }} 
+          />
           <span style={{ display: "block", height: "2px", width: "100%", background: "var(--color-accent)", opacity: 0.45, marginTop: "12px", marginBottom: "16px" }} />
           <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase" }}>The Year It All Began</p>
         </div>
@@ -201,9 +217,9 @@ function OurStoryTeaser() {
           </p>
           <OrnamentDots />
           <div style={{ marginTop: "40px" }}>
-            <Link href="/about" style={{ background: "transparent", color: "var(--color-accent)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase", border: "1px solid rgba(201,168,124,0.35)", padding: "12px 28px", display: "inline-flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
-              Read Our Full Story <span aria-hidden="true">→</span>
-            </Link>
+            <RippleButton variant="outline" href="/about">
+              Read Our Full Story <span aria-hidden="true" style={{ marginLeft: "8px" }}>→</span>
+            </RippleButton>
           </div>
         </div>
 
@@ -259,12 +275,12 @@ function HoursLocationStrip() {
               <PhoneIcon /> (TBD) — coming soon
             </div>
             <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <Link href="/contact" style={{ background: "var(--color-accent)", color: "var(--color-base)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.14em", textTransform: "uppercase", padding: "12px 28px", fontWeight: 600, display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+              <RippleButton variant="primary" href="/contact">
                 Get Directions
-              </Link>
-              <Link href="/employment" style={{ color: "var(--color-accent)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.14em", textTransform: "uppercase", border: "1px solid rgba(201,168,124,0.3)", padding: "12px 28px", display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+              </RippleButton>
+              <RippleButton variant="outline" href="/employment">
                 Join Our Team
-              </Link>
+              </RippleButton>
             </div>
           </div>
 
