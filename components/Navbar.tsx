@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import RippleButton from "./RippleButton";
+import MenuButtons from "./MenuButtons";
 
 const navLinks = [
   { label: "Flavors", href: "/flavors" },
@@ -15,11 +17,17 @@ const navLinks = [
 ];
 
 /* Inline style builder for nav links — bypasses all CSS cascade issues */
-function navLinkStyle(hovered: boolean): React.CSSProperties {
+function navLinkStyle(hovered: boolean, active: boolean): React.CSSProperties {
+  // If active, we start with pink (#FF4F79) and fill with black (#020100) on hover.
+  // If not active, we start with black (#020100) and fill with pink (#FF4F79) on hover.
+  
+  const backgroundPosition = active 
+    ? (hovered ? "100% center" : "0% center") // Pink -> Black
+    : (hovered ? "0% center" : "100% center"); // Black -> Pink
   return {
     fontFamily: "var(--font-lora), serif",
-    fontSize: "15px",
-    letterSpacing: "0.12em",
+    fontSize: "18px",
+    letterSpacing: "0.1em",
     textTransform: "uppercase",
     textDecoration: "none",
     display: "inline-block",
@@ -29,7 +37,7 @@ function navLinkStyle(hovered: boolean): React.CSSProperties {
     /* Left-to-right pink (Dusty Rose) fill via background-clip: text */
     backgroundImage: "linear-gradient(to right, #FF4F79 50%, #020100 50%)",
     backgroundSize: "200% 100%",
-    backgroundPosition: hovered ? "0% center" : "100% center",
+    backgroundPosition: backgroundPosition,
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
     WebkitTextFillColor: "transparent",
@@ -41,6 +49,7 @@ function navLinkStyle(hovered: boolean): React.CSSProperties {
 }
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [logoHovered, setLogoHovered] = useState(false);
 
@@ -62,14 +71,16 @@ export default function Navbar() {
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-start",
-          gap: "40px",
-          padding: "2px 24px",
+          gap: "clamp(20px, 4vw, 50px)",
+          padding: "4px 24px 2px 24px",
+          width: "100%",
+          boxSizing: "border-box"
         }}
       >
         {/* Logo */}
         <Link
           href="/"
-          aria-label="Day's Ice Cream — home"
+          aria-label="Day's Ice Cream | home"
           style={{
             flexShrink: 0,
             display: "flex",
@@ -81,21 +92,30 @@ export default function Navbar() {
         >
           <Image
             src="/Days Logo.png"
-            alt="Day's Ice Cream — Since 1876"
+            alt="Day's Ice Cream | Since 1876"
             width={140}
             height={140}
             priority
-            style={{ width: "135px", height: "auto" }}
+            style={{ width: "125px", height: "auto" }}
           />
         </Link>
 
         {/* Desktop nav links */}
-        <ul style={{ display: "flex", alignItems: "center", gap: "32px", listStyle: "none", margin: 0, padding: 0, marginLeft: "80px" }}>
+        <ul style={{ 
+          display: "flex", 
+          alignItems: "center", 
+          gap: "clamp(12px, 2.5vw, 32px)", 
+          listStyle: "none", 
+          margin: 0, 
+          padding: 0, 
+          marginLeft: "20px",
+          flexWrap: "nowrap"
+        }}>
           {navLinks.map((item, i) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                style={navLinkStyle(hoveredIndex === i)}
+                style={navLinkStyle(hoveredIndex === i, pathname === item.href)}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
@@ -105,17 +125,10 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* CTA button */}
-        <RippleButton
-          variant="primary"
-          href="/flavors"
-          style={{
-            marginLeft: "auto",
-            padding: "8px 20px",
-          }}
-        >
-          See the Menu
-        </RippleButton>
+        {/* CTA buttons */}
+        <div style={{ marginLeft: "auto" }}>
+          <MenuButtons isNavbar={true} align="right" />
+        </div>
       </nav>
     </header>
   );

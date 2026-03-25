@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
+import RippleButton from "@/components/RippleButton";
 
 /* ─── Shared ornamental divider ─── */
 function OrnamentDots() {
@@ -77,7 +78,7 @@ export default function ContactPage() {
           {/* Left Column: Form */}
           <div style={{ display: "flex", flexDirection: "column" }}>
             <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "32px", marginBottom: "24px" }}>Send a Message</h2>
-            <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "16px", lineHeight: 1.8, opacity: 0.8, marginBottom: "32px" }}>
+            <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "16px", lineHeight: 1.8, opacity: 0.9, marginBottom: "32px" }}>
               Have a question about our flavors, events, or just want to say hi? Fill out the form below and we'll get back to you as soon as possible.
             </p>
             <ContactForm />
@@ -94,9 +95,17 @@ export default function ContactPage() {
                 <h3 style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
                   <MapPinIcon /> Address
                 </h3>
-                <address style={{ fontStyle: "normal", fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "16px", lineHeight: 1.6 }}>
+                <address style={{ fontStyle: "normal", fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "16px", lineHeight: 1.6, marginBottom: "16px" }}>
                   48 Pitman Ave<br />Ocean Grove, NJ 07756
                 </address>
+                <RippleButton 
+                  variant="purple" 
+                  href="https://maps.app.goo.gl/CSPMXeBVPADKyzD" 
+                  target="_blank" 
+                  style={{ fontSize: "10px", padding: "8px 16px" }}
+                >
+                  Open in Google Maps <span aria-hidden="true" style={{ marginLeft: "4px" }}>↗</span>
+                </RippleButton>
               </div>
 
               <div>
@@ -107,7 +116,7 @@ export default function ContactPage() {
                   {hoursData.map((row) => (
                     <li key={row.days} style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
                       <span style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "15px" }}>{row.days}</span>
-                      <span style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "15px", opacity: 0.75 }}>{row.hours}</span>
+                      <span style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "15px", opacity: 0.85 }}>{row.hours}</span>
                     </li>
                   ))}
                 </ul>
@@ -117,7 +126,7 @@ export default function ContactPage() {
                 <h3 style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
                   <PhoneIcon /> Phone
                 </h3>
-                <span style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "16px" }}>(TBD) — coming soon</span>
+                <span style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "16px" }}>(TBD) - coming soon</span>
               </div>
 
               <div>
@@ -132,7 +141,7 @@ export default function ContactPage() {
             <div style={{ width: "100%", height: "240px", background: "var(--color-base)", position: "relative", border: "2px solid var(--color-accent)", borderRadius: "12px", overflow: "hidden" }}>
               <iframe
                 title="Google Maps: Day's Ice Cream"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3043.606214151978!2d-74.00843282367807!3d40.217835871473216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2263cd319f3cb%3A0xc34a6ca7c3cc17f0!2s48%20Pitman%20Ave%2C%20Ocean%20Grove%2C%20NJ%2007756!5e0!3m2!1sen!2sus!4v1716301234567!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d761.7056021321115!2d-74.00724353037674!3d40.21301319821707!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c22647f8fcf033%3A0x77afbdd6f3a89319!2sDays%20Ice%20Cream!5e0!3m2!1sen!2sus!4v1774371719714!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

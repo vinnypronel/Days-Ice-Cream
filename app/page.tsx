@@ -3,6 +3,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RippleButton from "@/components/RippleButton";
+import MenuButtons from "@/components/MenuButtons";
 
 /* ─── Shared ornamental divider ─── */
 function OrnamentDots() {
@@ -20,7 +21,7 @@ function OrnamentDots() {
 
 /* ─── Flavor data ─── */
 const featuredFlavors = [
-  { id: 1, name: "Vanilla Bean", tagline: "The original.", description: "Real Madagascar vanilla beans steeped in cream — the flavor that built this shop and kept it standing for 150 years.", bg: "#FAFAFA" },
+  { id: 1, name: "Vanilla Bean", tagline: "The original.", description: "Real Madagascar vanilla beans steeped in cream, the flavor that built this shop and kept it standing for 150 years.", bg: "#FAFAFA" },
   { id: 2, name: "Brown Butter Pecan", tagline: "Rich & roasted.", description: "Slow-browned butter folded into a custard base with toasted New Jersey pecans. A September tradition since the 1940s.", bg: "#F4F7F6" },
   { id: 3, name: "Salted Caramel Swirl", tagline: "Sweet with an edge.", description: "House-made caramel ribboned through a cream base, finished with a pinch of flaky sea salt. Deceptively simple.", bg: "#F8FAF9" },
 ];
@@ -85,13 +86,13 @@ function HeroSection() {
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, opacity: 0.03, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`, backgroundRepeat: "repeat", pointerEvents: "none" }} />
 
       <div style={{ position: "relative", maxWidth: "700px", width: "100%", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "4px", fontWeight: "bold" }}>
-          Ocean Grove, New Jersey — Est. 1876
+        <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "14px", letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: "8px", fontWeight: 800 }}>
+          Ocean Grove, New Jersey
         </p>
 
         <Image
           src="/Days Logo.png"
-          alt="Day's Ice Cream — Since 1876"
+          alt="Day's Ice Cream | Since 1876"
           width={400}
           height={400}
           priority
@@ -106,12 +107,7 @@ function HeroSection() {
         />
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", justifyContent: "center", marginBottom: "0px" }}>
-          <RippleButton variant="primary" href="/flavors" id="hero-cta-menu" style={{ padding: "14px 32px" }}>
-            Explore the Menu
-          </RippleButton>
-          <RippleButton variant="mint" href="/about" id="hero-cta-story" style={{ padding: "14px 20px" }}>
-            Our Story <span aria-hidden="true">→</span>
-          </RippleButton>
+          <MenuButtons />
         </div>
       </div>
     </section>
@@ -136,13 +132,13 @@ function IntroStrip() {
 ═══════════════════════════════════════════════════════════ */
 function FeaturedFlavors() {
   return (
-    <section id="featured-flavors" aria-label="Featured flavors" style={{ background: "var(--color-warm-white)", width: "100%", padding: "96px 24px" }}>
+    <section id="featured-flavors" aria-label="Staff favorites" style={{ background: "#CAB6FF", width: "100%", padding: "32px 24px" }}>
       {/* Center wrapper */}
       <div style={{ maxWidth: "1152px", margin: "0 auto" }}>
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "64px" }}>
-          <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-surface)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", opacity: 0.7, marginBottom: "16px" }}>Made Fresh Daily</p>
-          <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-base)", fontSize: "clamp(28px, 4vw, 46px)", lineHeight: 1.15, marginBottom: "24px" }}>House Favorites</h2>
+        <div style={{ textAlign: "center", marginBottom: "40px" }}>
+          <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", opacity: 0.7, marginBottom: "12px" }}>Made Fresh Daily</p>
+          <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "#020100", fontSize: "clamp(28px, 4vw, 46px)", lineHeight: 1.15, marginBottom: "16px" }}>Staff Favorites</h2>
           <OrnamentDots />
         </div>
 
@@ -157,16 +153,14 @@ function FeaturedFlavors() {
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", padding: "28px", textAlign: "center" }}>
                 <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase" }}>{flavor.tagline}</p>
                 <h3 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "22px", lineHeight: 1.2 }}>{flavor.name}</h3>
-                <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "14px", lineHeight: 1.75, opacity: 0.78 }}>{flavor.description}</p>
+                <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "14px", lineHeight: 1.75, opacity: 0.8 }}>{flavor.description}</p>
               </div>
             </article>
           ))}
         </div>
 
-        <div style={{ textAlign: "center", marginTop: "56px" }}>
-          <Link href="/flavors" style={{ color: "var(--color-base)", fontFamily: "var(--font-lora), serif", fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase", borderBottom: "1px solid var(--color-surface)", paddingBottom: "2px", display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
-            View the Full Menu <span aria-hidden="true">→</span>
-          </Link>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
+          <MenuButtons />
         </div>
       </div>
     </section>
@@ -209,15 +203,15 @@ function OurStoryTeaser() {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "20px" }}>Our Story</p>
           <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "clamp(26px, 3.5vw, 42px)", lineHeight: 1.2, marginBottom: "28px" }}>New Hands.<br />Same Soul.</h2>
-          <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "16px", lineHeight: 1.85, opacity: 0.82, marginBottom: "20px" }}>
-            Day&rsquo;s Ice Cream has been a fixture of Ocean Grove since Ulysses S. Grant was president. Over 150 years, the shop has survived two World Wars, the Great Depression, and every summer in between — serving scoops to generations of families who made it their ritual.
+          <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "16px", lineHeight: 1.85, opacity: 0.9, marginBottom: "20px" }}>
+            Day&rsquo;s Ice Cream has been a fixture of Ocean Grove since Ulysses S. Grant was president. Over 150 years, the shop has survived two World Wars, the Great Depression, and every summer in between, serving scoops to generations of families who made it their ritual.
           </p>
-          <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "16px", lineHeight: 1.85, opacity: 0.82, marginBottom: "40px" }}>
-            Under new ownership, Day&rsquo;s enters its next chapter with deep reverence for what came before. The recipes, the corner, the name — all honored. What&rsquo;s new is the commitment to carry it forward with the same care it deserves.
+          <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "16px", lineHeight: 1.85, opacity: 0.9, marginBottom: "40px" }}>
+            Under new ownership, Day&rsquo;s enters its next chapter with deep reverence for what came before. The recipes, the corner, the name, all honored. What&rsquo;s new is the commitment to carry it forward with the same care it deserves.
           </p>
           <OrnamentDots />
           <div style={{ marginTop: "40px" }}>
-            <RippleButton variant="outline" href="/about">
+            <RippleButton variant="mint" href="/about">
               Read Our Full Story <span aria-hidden="true" style={{ marginLeft: "8px" }}>→</span>
             </RippleButton>
           </div>
@@ -254,11 +248,11 @@ function HoursLocationStrip() {
               {hoursData.map((row) => (
                 <li key={row.days} style={{ display: "flex", justifyContent: "space-between", gap: "16px", borderBottom: "1px solid rgba(201,168,124,0.12)", paddingBottom: "16px", marginBottom: "16px" }}>
                   <span style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "15px" }}>{row.days}</span>
-                  <span style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "15px", opacity: 0.75 }}>{row.hours}</span>
+                  <span style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "15px", opacity: 0.9 }}>{row.hours}</span>
                 </li>
               ))}
             </ul>
-            <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "13px", opacity: 0.55, fontStyle: "italic", marginTop: "8px" }}>
+            <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "13px", opacity: 0.7, fontStyle: "italic", marginTop: "8px" }}>
               * Hours subject to change. Seasonal schedule may vary.
             </p>
           </div>
@@ -271,8 +265,8 @@ function HoursLocationStrip() {
             <address style={{ fontStyle: "normal", fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "17px", lineHeight: 1.7, marginBottom: "12px" }}>
               48 Pitman Ave<br />Ocean Grove, NJ 07756
             </address>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "15px", opacity: 0.65, marginBottom: "40px" }}>
-              <PhoneIcon /> (TBD) — coming soon
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "15px", opacity: 0.85, marginBottom: "40px" }}>
+              <PhoneIcon /> (TBD) - coming soon
             </div>
             <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
               <RippleButton variant="primary" href="/contact">

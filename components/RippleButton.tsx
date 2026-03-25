@@ -1,179 +1,256 @@
 "use client";
+import React, { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 
-import React, { useRef, useState } from "react";
-import Link, { LinkProps } from "next/link";
-
-type Variant = "primary" | "dark" | "outline" | "mint";
-
-interface BaseProps {
-  variant?: Variant;
-  className?: string;
-  style?: React.CSSProperties;
+interface RippleButtonProps {
   children: React.ReactNode;
+  variant?: "primary" | "outline" | "dark" | "purple" | "mint";
+  href?: string;
+  onClick?: () => void;
+  style?: React.CSSProperties;
+  target?: string;
+  className?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
-type ButtonProps = BaseProps & React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: never };
-type AnchorProps = BaseProps & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof BaseProps | keyof LinkProps> & LinkProps;
+function waffleBg(color: string) {
+  return `
+    repeating-linear-gradient(45deg, ${color} 0px, ${color} 1.5px, transparent 1.5px, transparent 9px),
+    repeating-linear-gradient(135deg, ${color} 0px, ${color} 1.5px, transparent 1.5px, transparent 9px)
+  `;
+}
 
-export default function RippleButton(props: ButtonProps | AnchorProps) {
-  const { variant = "primary", className = "", style, children, href, ...rest } = props;
-  
-  const buttonRef = useRef<HTMLElement>(null);
-  const [coords, setCoords] = useState({ x: -1, y: -1 });
-  const [isHovering, setIsHovering] = useState(false);
+const EXPAND_DURATION = 1400;
+const RETRACT_DURATION = 600;
+
+const getVariantStyles = (variant: string) => {
+  switch (variant) {
+    case "outline":
+      return {
+        bg: "#ffffff",
+        border: "#020100",
+        text: "#020100",
+        fillColor: "#020100",
+      };
+    case "dark":
+      return {
+        bg: "#ffffff",
+        border: "#020100",
+        text: "#020100",
+        fillColor: "#98E6B3",
+      };
+    case "purple":
+      return {
+        bg: "#ffffff",
+        border: "#9333EA",
+        text: "#7E22CE",
+        fillColor: "#CAB6FF",
+      };
+    case "mint":
+      return {
+        bg: "#ffffff",
+        border: "#059669",
+        text: "#059669",
+        fillColor: "#98E6B3",
+      };
+    default: // primary — pink
+      return {
+        bg: "#ffffff",
+        border: "#C4005A",
+        text: "#C4005A",
+        fillColor: "#FF4F79",
+      };
+  }
+};
+
+const RippleButton: React.FC<RippleButtonProps> = ({
+  children,
+  variant = "primary",
+  href,
+  onClick,
+  style,
+  target,
+  className = "",
+  type = "button",
+  disabled = false,
+}) => {
+  const btnRef = useRef<HTMLButtonElement | HTMLAnchorElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const radiusRef = useRef(0);
+  const startRRef = useRef(0);
+  const phaseRef = useRef("idle");
+
+  const [phase, setPhase] = useState("idle");
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [radius, setRadius] = useState(0);
+  const [pressed, setPressed] = useState(false);
+
+  const c = getVariantStyles(variant);
+
+  const cancelAnim = () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  const setR = (r: number) => { radiusRef.current = r; setRadius(r); };
+  const setP = (p: string) => { phaseRef.current = p; setPhase(p); };
+
+  const getMaxRadius = (x: number, y: number) => {
+    const rect = btnRef.current?.getBoundingClientRect();
+    if (!rect) return 300;
+    return Math.max(...([[0,0],[rect.width,0],[0,rect.height],[rect.width,rect.height]] as [number,number][])
+      .map(([cx, cy]) => Math.sqrt((cx - x) ** 2 + (cy - y) ** 2))) + 4;
+  };
 
   const handleMouseEnter = (e: React.MouseEvent) => {
-    const rect = buttonRef.current?.getBoundingClientRect();
-    if (rect) {
-      setCoords({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-      setIsHovering(true);
-    }
-    
-    // Call original handlers if they exist
-    if ((props as any).onMouseEnter) {
-      (props as any).onMouseEnter(e);
-    }
+    cancelAnim();
+    if (!btnRef.current) return;
+    const rect = btnRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setPos({ x, y });
+    const maxR = getMaxRadius(x, y);
+    let startTime: number | null = null;
+    setP("expanding");
+    const animate = (ts: number) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / EXPAND_DURATION, 1);
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setR(eased * maxR);
+      if (progress < 1) rafRef.current = requestAnimationFrame(animate);
+      else setP("full");
+    };
+    rafRef.current = requestAnimationFrame(animate);
   };
 
-  const handleMouseLeave = (e: React.MouseEvent) => {
-    setIsHovering(false);
-    
-    if ((props as any).onMouseLeave) {
-      (props as any).onMouseLeave(e);
-    }
+  const handleMouseLeave = () => {
+    setPressed(false);
+    cancelAnim();
+    startRRef.current = radiusRef.current;
+    setP("retracing");
+    let startTime: number | null = null;
+    const animateOut = (ts: number) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / RETRACT_DURATION, 1);
+      const eased = progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      setR(startRRef.current * (1 - eased));
+      if (progress < 1) rafRef.current = requestAnimationFrame(animateOut);
+      else { setR(0); setP("idle"); }
+    };
+    rafRef.current = requestAnimationFrame(animateOut);
   };
 
-  // Determine colors based on variant
-  let bg = "var(--color-accent)"; // primary default #FF4F79
-  let text = "var(--color-base)"; // white-ish #FDFFFC
-  let rippleBg = "var(--color-base)";
-  let textHover = "var(--color-accent)";
-  let border = "none";
+  useEffect(() => () => cancelAnim(), []);
 
-  if (variant === "dark") {
-    bg = "var(--color-base)"; // dark #020100 conceptually? Wait, base is light. 
-    // Wait, in this project var(--color-base) is dark or light? Let me check globals.css!
-  }
+  const isHovered = phase === "expanding" || phase === "full";
+  const activeColor = isHovered ? c.fillColor : c.border;
+  const shadowTranslate = isHovered ? "translate(8px, 8px)" : "translate(5px, 5px)";
+  const btnTranslate = pressed ? "translate(4px, 4px)" : isHovered ? "translate(-4px, -4px)" : "translate(0, 0)";
 
-  // To be safe, I'm dynamically adjusting to inverse the colors as described by the user.
-  // The user explicitly specified:
-  // "primary" -> pink background (#FF4F79) -> text white (#FDFFFC). Hover fill: white (#FDFFFC), text pink (#FF4F79).
-  // "dark" -> dark background (#020100) -> text white (#FDFFFC). Hover fill white (#FDFFFC), text dark (#020100).
-  // Let's hardcode the requested HEX colors for perfect precision.
+const wrapperStyle: React.CSSProperties = {
+    position: "relative",
+    display: "inline-flex",
+    ...style,
+    width: "auto",
+  };
 
-  if (variant === "primary") {
-    bg = "#FF4F79";
-    text = "#FDFFFC";
-    rippleBg = "#98E6B3"; // filled in with mint green on hover
-    textHover = "#020100"; // dark text on mint green for readability
-  } else if (variant === "dark") {
-    bg = "#020100";
-    text = "#FDFFFC";
-    rippleBg = "#FDFFFC";
-    textHover = "#020100";
-  } else if (variant === "outline") {
-    bg = "transparent";
-    // For outline buttons, we assume the border is the primary accent or explicitly styled.
-    // The user requested: "For outline buttons the fill should be the opposite of the current border color."
-    // Let's assume outline is accent colored border. Fill -> Accent, Text -> White.
-    bg = "transparent";
-    text = "var(--color-accent)"; // #FF4F79 or similar
-    rippleBg = "var(--color-accent)";
-    textHover = "var(--color-base, #FDFFFC)";
-    border = "1px solid rgba(201,168,124,0.35)"; // typical style for the outline buttons here
-  } else if (variant === "mint") {
-    bg = "#98E6B3";
-    text = "#020100";
-    rippleBg = "#FF4F79"; // pink on hover
-    textHover = "#FDFFFC"; // white text on pink
-  }
+  const shadowStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    borderRadius: "50px",
+    background: waffleBg(activeColor),
+    border: `2.5px solid ${activeColor}`,
+    transform: shadowTranslate,
+    transition: "transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.4s ease, border-color 0.4s ease",
+    pointerEvents: "none",
+    zIndex: 0,
+    boxSizing: "border-box" as const,
+  };
 
-  const content = (
+  const buttonStyle: React.CSSProperties = {
+    position: "relative",
+    overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "16px 48px",
+    fontSize: "13px",
+    fontWeight: 700,
+    fontFamily: "var(--font-jakarta), sans-serif",
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.15em",
+    cursor: "pointer",
+    borderRadius: "50px",
+    background: c.bg,
+    border: `2.5px solid ${activeColor}`,
+    color: c.text,
+    textDecoration: "none",
+    transform: btnTranslate,
+    transition: "transform 0.3s cubic-bezier(0.34,1.56,0.64,1), border-color 0.4s ease",
+    outline: "none",
+    whiteSpace: "nowrap" as const,
+    zIndex: 1,
+    boxSizing: "border-box" as const,
+    width: "auto",
+    ...style,
+  };
+
+  const rippleStyle: React.CSSProperties = {
+    position: "absolute",
+    left: pos.x,
+    top: pos.y,
+    width: radius * 2,
+    height: radius * 2,
+    borderRadius: "50%",
+    background: c.fillColor,
+    opacity: 0.18,
+    transform: "translate(-50%, -50%)",
+    pointerEvents: "none",
+    zIndex: 1,
+    willChange: "width, height",
+  };
+
+  const innerContent = (
     <>
-      <span
-        style={{
-          position: "absolute",
-          left: coords.x,
-          top: coords.y,
-          width: "20px",
-          height: "20px",
-          background: rippleBg,
-          borderRadius: "50%",
-          transform: isHovering && coords.x !== -1 ? "translate(-50%, -50%) scale(40)" : "translate(-50%, -50%) scale(0)",
-          transition: "transform 700ms ease-out",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-        aria-hidden="true"
-      />
-      <span style={{ 
-        position: "relative", 
-        zIndex: 1, 
-        transition: "color 700ms ease-out",
-        color: isHovering ? textHover : text,
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "inherit"
-      }}>
-        {children}
-      </span>
+      {phase !== "idle" && <span style={rippleStyle} />}
+      <span style={{ position: "relative", zIndex: 2 }}>{children}</span>
     </>
   );
 
-  const commonStyles: React.CSSProperties = {
-    position: "relative",
-    overflow: "hidden",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    background: bg,
-    border: border,
-    borderRadius: "6px",
-    padding: "12px 28px", 
-    fontFamily: "var(--font-lora), serif",
-    fontSize: "12px",
-    letterSpacing: "0.16em",
-    textTransform: "uppercase",
-    fontWeight: 600,
-    textDecoration: "none",
-    cursor: "pointer",
-    transform: isHovering ? "scale(1.05)" : "scale(1)",
-    transition: "transform 200ms ease-out, box-shadow 200ms ease-out", // scale and shadow transition
-    color: text, // Fallback for container
-    ...style, // allow overrides from parent
+  const commonProps = {
+    onMouseEnter: handleMouseEnter,
+    onMouseLeave: handleMouseLeave,
+    onMouseDown: () => setPressed(true),
+    onMouseUp: () => setPressed(false),
+    style: buttonStyle,
+    className: `ripple-button ${className}`,
   };
 
-  if (href) {
-    return (
-      <Link 
-        href={href}
-        ref={buttonRef as any}
-        className={className}
-        style={commonStyles}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        {...(rest as any)}
-      >
-        {content}
-      </Link>
-    );
-  }
-
   return (
-    <button
-      ref={buttonRef as any}
-      className={className}
-      style={commonStyles}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      {...(rest as any)}
-    >
-      {content}
-    </button>
+    <div style={wrapperStyle}>
+      <div style={shadowStyle} />
+      {href ? (
+        <Link
+          href={href}
+          target={target}
+          ref={btnRef as React.Ref<HTMLAnchorElement>}
+          {...commonProps}
+        >
+          {innerContent}
+        </Link>
+      ) : (
+        <button
+          type={type}
+          disabled={disabled}
+          onClick={onClick}
+          ref={btnRef as React.Ref<HTMLButtonElement>}
+          {...commonProps}
+        >
+          {innerContent}
+        </button>
+      )}
+    </div>
   );
-}
+};
+
+export default RippleButton;
+;

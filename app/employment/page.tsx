@@ -22,7 +22,7 @@ export default function EmploymentPage() {
             </div>
           </div>
           <div style={{ marginBottom: "48px", textAlign: "center" }}>
-            <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-warm-white)", fontSize: "16px", lineHeight: 1.8, opacity: 0.8 }}>
+            <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "16px", lineHeight: 1.8, opacity: 0.9 }}>
               Day&rsquo;s Ice Cream is always looking for friendly, hardworking individuals to join our team for the season.
               Please fill out the form below and we will be in touch if your qualifications match our current needs.
             </p>

@@ -127,7 +127,6 @@ export default function EmploymentForm() {
         disabled={isSubmitting}
         style={{
           marginTop: "48px",
-          width: "100%",
           padding: "16px 40px",
           opacity: isSubmitting ? 0.7 : 1,
           cursor: isSubmitting ? "not-allowed" : "pointer",

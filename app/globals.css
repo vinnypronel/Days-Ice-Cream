@@ -6,7 +6,7 @@
   --color-surface:    #F4F7F6;   /* off-white — secondary background / light surfaces */
   --color-cream:      #020100;   /* near black — typography / primary text */
   --color-accent:     #FF4F79;   /* bubblegum pink — accent / highlight color */
-  --color-warm-white: #546A76;   /* blue slate — muted / supporting color */
+  --color-warm-white: #98E6B3;   /* mint green — brand supporting color */
 }
 
 /* ─── Tailwind v4 theme tokens ─── */
@@ -31,6 +31,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -41,6 +42,8 @@ body {
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* ─── Typography helpers ─── */
