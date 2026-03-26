@@ -14,13 +14,6 @@ interface RippleButtonProps {
   disabled?: boolean;
 }
 
-function waffleBg(color: string) {
-  return `
-    repeating-linear-gradient(45deg, ${color} 0px, ${color} 1.5px, transparent 1.5px, transparent 9px),
-    repeating-linear-gradient(135deg, ${color} 0px, ${color} 1.5px, transparent 1.5px, transparent 9px)
-  `;
-}
-
 const EXPAND_DURATION = 1400;
 const RETRACT_DURATION = 600;
 
@@ -32,34 +25,39 @@ const getVariantStyles = (variant: string) => {
         border: "#020100",
         text: "#020100",
         fillColor: "#020100",
+        backdrop: "#000000",
       };
     case "dark":
       return {
         bg: "#ffffff",
         border: "#020100",
         text: "#020100",
-        fillColor: "#98E6B3",
+        fillColor: "#020100",
+        backdrop: "#000000",
       };
     case "purple":
       return {
         bg: "#ffffff",
         border: "#9333EA",
-        text: "#7E22CE",
-        fillColor: "#CAB6FF",
+        text: "#9333EA",
+        fillColor: "#B197FF",
+        backdrop: "#6B21A8",
       };
     case "mint":
       return {
         bg: "#ffffff",
         border: "#059669",
         text: "#059669",
-        fillColor: "#98E6B3",
+        fillColor: "#7CD69B",
+        backdrop: "#064E3B",
       };
     default: // primary — pink
       return {
         bg: "#ffffff",
-        border: "#C4005A",
-        text: "#C4005A",
+        border: "#FF4F79",
+        text: "#FF4F79",
         fillColor: "#FF4F79",
+        backdrop: "#900042",
       };
   }
 };
@@ -142,28 +140,74 @@ const RippleButton: React.FC<RippleButtonProps> = ({
   useEffect(() => () => cancelAnim(), []);
 
   const isHovered = phase === "expanding" || phase === "full";
-  const activeColor = isHovered ? c.fillColor : c.border;
+  const frontColor = isHovered ? c.fillColor : c.border;
   const shadowTranslate = isHovered ? "translate(8px, 8px)" : "translate(5px, 5px)";
   const btnTranslate = pressed ? "translate(4px, 4px)" : isHovered ? "translate(-4px, -4px)" : "translate(0, 0)";
 
-const wrapperStyle: React.CSSProperties = {
+  const layoutKeys = [
+    "margin", "marginTop", "marginRight", "marginBottom", "marginLeft",
+    "alignSelf", "justifySelf", "flex", "flexGrow", "flexShrink", "flexBasis",
+    "order", "gridArea", "gridColumn", "gridRow"
+  ];
+
+  const layoutStyle: React.CSSProperties = {};
+  const buttonOnlyStyle: React.CSSProperties = {};
+
+  if (style) {
+    (Object.keys(style) as Array<keyof React.CSSProperties>).forEach((key) => {
+      if (layoutKeys.includes(key as string)) {
+        layoutStyle[key] = style[key] as any;
+      } else {
+        buttonOnlyStyle[key] = style[key] as any;
+      }
+    });
+  }
+
+  const wrapperStyle: React.CSSProperties = {
     position: "relative",
     display: "inline-flex",
-    ...style,
-    width: "auto",
+    width: "fit-content",
+    ...layoutStyle,
   };
+
+function waffleBg(color: string) {
+  return `
+    repeating-linear-gradient(45deg, ${color} 0px, ${color} 1.5px, transparent 1.5px, transparent 9px),
+    repeating-linear-gradient(135deg, ${color} 0px, ${color} 1.5px, transparent 1.5px, transparent 9px)
+  `;
+}
+
+  const shadowColor = (c as any).backdrop || c.border;
 
   const shadowStyle: React.CSSProperties = {
     position: "absolute",
     inset: 0,
     borderRadius: "50px",
-    background: waffleBg(activeColor),
-    border: `2.5px solid ${activeColor}`,
+    background: isHovered ? shadowColor : "transparent",
+    border: `2.5px solid ${shadowColor}`,
     transform: shadowTranslate,
-    transition: "transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.4s ease, border-color 0.4s ease",
+    transition: "transform 0.4s cubic-bezier(0.34,1.56,0.64,1), border-color 0.4s ease, background-color 0.4s ease",
     pointerEvents: "none",
     zIndex: 0,
     boxSizing: "border-box" as const,
+    overflow: "hidden",
+  };
+
+  const waffleLayerStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    background: waffleBg(shadowColor),
+    opacity: isHovered ? 0 : 1,
+    transition: "opacity 0.4s ease",
+  };
+
+  const solidFillStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: "-4px",
+    background: shadowColor,
+    opacity: isHovered ? 1 : 0,
+    boxShadow: `0 0 2px 2px ${shadowColor}`,
+    transition: "opacity 0.4s ease",
   };
 
   const buttonStyle: React.CSSProperties = {
@@ -181,7 +225,7 @@ const wrapperStyle: React.CSSProperties = {
     cursor: "pointer",
     borderRadius: "50px",
     background: c.bg,
-    border: `2.5px solid ${activeColor}`,
+    border: `2.5px solid ${frontColor}`,
     color: c.text,
     textDecoration: "none",
     transform: btnTranslate,
@@ -191,7 +235,7 @@ const wrapperStyle: React.CSSProperties = {
     zIndex: 1,
     boxSizing: "border-box" as const,
     width: "auto",
-    ...style,
+    ...buttonOnlyStyle,
   };
 
   const rippleStyle: React.CSSProperties = {
@@ -202,7 +246,7 @@ const wrapperStyle: React.CSSProperties = {
     height: radius * 2,
     borderRadius: "50%",
     background: c.fillColor,
-    opacity: 0.18,
+    opacity: 0.5,
     transform: "translate(-50%, -50%)",
     pointerEvents: "none",
     zIndex: 1,
@@ -227,7 +271,10 @@ const wrapperStyle: React.CSSProperties = {
 
   return (
     <div style={wrapperStyle}>
-      <div style={shadowStyle} />
+      <div style={shadowStyle}>
+        <div style={waffleLayerStyle} />
+        <div style={solidFillStyle} />
+      </div>
       {href ? (
         <Link
           href={href}
@@ -253,4 +300,3 @@ const wrapperStyle: React.CSSProperties = {
 };
 
 export default RippleButton;
-;

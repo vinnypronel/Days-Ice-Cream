@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import RippleButton from "./RippleButton";
+import RippleButton from "../ui/RippleButton";
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);

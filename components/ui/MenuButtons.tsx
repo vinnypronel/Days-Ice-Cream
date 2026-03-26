@@ -5,17 +5,20 @@ import RippleButton from "./RippleButton";
 interface MenuButtonsProps {
   align?: "center" | "left" | "right";
   isNavbar?: boolean;
+  layout?: "row" | "column";
 }
 
-export default function MenuButtons({ align = "center", isNavbar = false }: MenuButtonsProps) {
+export default function MenuButtons({ align = "center", isNavbar = false, layout = "column" }: MenuButtonsProps) {
   const containerStyle: React.CSSProperties = {
     display: "flex",
-    flexDirection: isNavbar ? "column" : "row",
-    flexWrap: "wrap",
-    alignItems: "center",
+    flexDirection: layout,
+    alignItems: layout === "column" 
+      ? (align === "right" ? "flex-end" : align === "left" ? "flex-start" : "center")
+      : "center",
     justifyContent: "center",
-    gap: isNavbar ? "4px" : "16px",
+    gap: isNavbar ? "14px" : (layout === "row" ? "16px" : "28px"),
     width: "fit-content",
+    flexWrap: "wrap",
   };
 
   return (
@@ -35,8 +38,8 @@ export default function MenuButtons({ align = "center", isNavbar = false }: Menu
         variant="mint"
         href="/toppings"
         style={{
-          padding: isNavbar ? "3px 10px" : "10px 24px",
-          fontSize: isNavbar ? "9px" : "12px",
+          padding: isNavbar ? "5px 12px" : "13px 26px",
+          fontSize: isNavbar ? "10px" : "12px",
           alignSelf: align === "right" ? "flex-end" : align === "left" ? "flex-start" : "center",
         }}
       >

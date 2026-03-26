@@ -47,13 +47,102 @@ export default function Footer() {
       role="contentinfo"
       style={{
         background: "#CAB6FF",
-        borderTop: "1px solid rgba(201,168,124,0.1)",
+        borderTop: "1.5px solid #020100",
         width: "100%",
-        padding: "40px 24px",
+        padding: "60px 24px 32px 24px",
+        position: "relative",
+        overflow: "hidden"
       }}
     >
+      {/* Absolute positioned background image for legacy charm */}
+      <div 
+        style={{ 
+          position: "absolute", 
+          left: "clamp(10px, 2vw, 60px)", 
+          top: "55px", 
+          transform: "rotate(-4deg)", 
+          zIndex: 1,
+          boxShadow: "0 10px 40px rgba(0,2,1,0.22)",
+          border: "1.5px solid #020100",
+          backgroundColor: "#FCCE97", // Warm cardboard / waffle backing
+          padding: "8px 8px 22px 8px", // Refined Retro Polaroid style
+          display: "inline-block"
+        }}
+        className="legacy-photo-footer waffle-texture"
+      >
+        <div style={{ 
+          position: "relative", 
+          width: "clamp(180px, 20vw, 320px)",
+          border: "1px solid rgba(2,1,0,0.8)", // Clean inner print border
+          overflow: "hidden"
+        }}>
+          <Image 
+            src="/olddays.jpg" 
+            alt="Day's Ice Cream Heritage" 
+            width={400} 
+            height={300}
+            style={{ 
+              width: "100%", 
+              height: "auto", 
+              display: "block",
+              filter: "sepia(0.6) contrast(1.1) grayscale(0.1)" // Authentic vintage patina
+            }} 
+          />
+        </div>
+      </div>
+
+      {/* Mirrored legacy photo on the right */}
+      <div 
+        style={{ 
+          position: "absolute", 
+          right: "clamp(30px, 4vw, 80px)", 
+          top: "55px", 
+          transform: "rotate(2.5deg)", 
+          zIndex: 1,
+          boxShadow: "0 10px 40px rgba(0,2,1,0.22)",
+          border: "1.5px solid #020100",
+          backgroundColor: "#FCCE97", // Warm cardboard / waffle backing
+          padding: "8px 8px 22px 8px", // Refined Retro Polaroid style
+          display: "inline-block"
+        }}
+        className="legacy-photo-footer right waffle-texture"
+      >
+        <div style={{ 
+          position: "relative", 
+          width: "clamp(180px, 20vw, 320px)",
+          border: "1px solid rgba(2,1,0,0.8)", // Clean inner print border
+          overflow: "hidden"
+        }}>
+          <Image 
+            src="/insideshop.jpg" 
+            alt="Day's Ice Cream Legacy Interior" 
+            width={400} 
+            height={300}
+            style={{ 
+              width: "100%", 
+              height: "auto", 
+              display: "block",
+              filter: "sepia(0.6) contrast(1.1) grayscale(0.1)" // Authentic vintage patina
+            }} 
+          />
+        </div>
+      </div>
+
+      <style>{`
+        .waffle-texture {
+          background-image: 
+            repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(139, 99, 64, 0.28) 15px, rgba(139, 99, 64, 0.28) 16px),
+            repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(139, 99, 64, 0.28) 15px, rgba(139, 99, 64, 0.28) 16px);
+        }
+
+        @media (max-width: 1250px) {
+          .legacy-photo-footer { display: none !important; }
+        }
+      `}</style>
+
       {/* Centered column */}
-      <div style={{ maxWidth: "960px", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: "28px" }}>
+      <div style={{ maxWidth: "1250px", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", position: "relative", zIndex: 10 }}>
+
 
         {/* Logo */}
         <Link
@@ -62,7 +151,11 @@ export default function Footer() {
           style={{
             display: "flex",
             transition: "transform 0.3s ease",
-            transform: logoHovered ? "scale(1.1)" : "scale(1)",
+            transform: logoHovered ? "scale(1.05)" : "scale(1)",
+            marginTop: "-54px",
+            marginBottom: "-19px",
+            position: "relative",
+            zIndex: 10
           }}
           onMouseEnter={() => setLogoHovered(true)}
           onMouseLeave={() => setLogoHovered(false)}
@@ -70,26 +163,14 @@ export default function Footer() {
           <Image
             src="/Days Logo.png"
             alt="Day's Ice Cream | Since 1876"
-            width={120}
-            height={120}
-            style={{ filter: "brightness(0)", opacity: 0.9, width: "115px", height: "auto" }}
+            width={210}
+            height={210}
+            style={{ filter: "brightness(0)", opacity: 0.9, width: "210px", height: "auto" }}
           />
         </Link>
 
         {/* Nav */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
-          <h3 style={{ 
-            fontFamily: "var(--font-jakarta), sans-serif", 
-            fontSize: "14px", 
-            fontWeight: 600, 
-            textTransform: "uppercase", 
-            letterSpacing: "0.1em",
-            color: "#020100",
-            opacity: 0.8,
-            margin: 0
-          }}>
-            Sitemap
-          </h3>
           <nav aria-label="Footer navigation">
             <ul style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "32px", listStyle: "none", margin: 0, padding: 0 }}>
               {navLinks.map((item, i) => (

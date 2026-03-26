@@ -1,7 +1,7 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ContactForm from "@/components/ContactForm";
-import RippleButton from "@/components/RippleButton";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import ContactForm from "@/components/forms/ContactForm";
+import RippleButton from "@/components/ui/RippleButton";
 
 /* ─── Shared ornamental divider ─── */
 function OrnamentDots() {

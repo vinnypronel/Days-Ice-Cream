@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import RippleButton from "@/components/RippleButton";
-import MenuButtons from "@/components/MenuButtons";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import RippleButton from "@/components/ui/RippleButton";
+import MenuButtons from "@/components/ui/MenuButtons";
 
 export const metadata: Metadata = {
   title: "Our Story | Day's Ice Cream | Since 1876, Ocean Grove NJ",
@@ -30,7 +30,7 @@ function VintagePhoto({ src, alt, rotate = 0, style = {} }: { src: string, alt: 
         margin: 0,
         padding: "12px",
         background: "#FDFFFC",
-        border: "1px solid var(--color-warm-white)",
+        border: "1px solid var(--color-accent)",
         boxShadow: "4px 6px 14px rgba(2, 1, 0, 0.12)",
         borderRadius: "3px",
         display: "inline-block",
@@ -274,9 +274,9 @@ function NewOwnership() {
             />
           </div>
 
-          <div className="bottom-buttons" style={{ display: "flex", flexWrap: "wrap", gap: "16px", alignItems: "center" }}>
+          <div className="bottom-buttons" style={{ display: "flex", flexDirection: "column", gap: "28px", alignItems: "center" }}>
             <MenuButtons />
-            <RippleButton variant="purple" href="/contact" style={{ padding: "14px 40px" }}>
+            <RippleButton variant="purple" href="/contact" style={{ padding: "8px 24px", fontSize: "11px" }}>
               Visit Us
             </RippleButton>
           </div>

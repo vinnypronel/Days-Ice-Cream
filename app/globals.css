@@ -29,21 +29,24 @@
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 100% !important;
+  width: 100%;
   overflow-x: hidden;
+  background-color: var(--color-base);
+  /* Fix for Windows scrollbar causing horizontal gap */
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
 }
 
-body {
-  background-color: var(--color-base);
-  color: var(--color-cream);
-  font-family: var(--font-lora), Georgia, serif;
-  font-size: 16px;
-  line-height: 1.75;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+section, footer, header, main, .full-bleed {
   width: 100%;
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  overflow: clip; /* Modern alternative to hidden to contain overflows strictly */
 }
 
 /* ─── Typography helpers ─── */
@@ -69,11 +72,6 @@ body {
   opacity: 0.4;
 }
 
-/* ─── Scrollbar — keep it on-brand ─── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-base); }
-::-webkit-scrollbar-thumb { background: var(--color-surface); border-radius: 3px; }
-
 /* ─── Logo Hover Effect ─── */
 .logo-hover {
   transition: transform 0.3s ease;
@@ -82,5 +80,6 @@ body {
 .logo-hover:hover {
   transform: scale(1.08);
 }
+
 
 

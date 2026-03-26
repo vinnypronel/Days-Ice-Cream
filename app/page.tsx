@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import RippleButton from "@/components/RippleButton";
-import MenuButtons from "@/components/MenuButtons";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import RippleButton from "@/components/ui/RippleButton";
+import MenuButtons from "@/components/ui/MenuButtons";
 
 /* ─── Shared ornamental divider ─── */
 function OrnamentDots() {
@@ -70,7 +70,7 @@ function HeroSection() {
         alignItems: "center",
         justifyContent: "center",
         overflow: "visible",
-        padding: "3vh 24px 27vh",
+        padding: "0 24px 34vh",
         textAlign: "center",
         backgroundImage: "url('/background.png')",
         backgroundSize: "cover",
@@ -136,31 +136,31 @@ function FeaturedFlavors() {
       {/* Center wrapper */}
       <div style={{ maxWidth: "1152px", margin: "0 auto" }}>
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", opacity: 0.7, marginBottom: "12px" }}>Made Fresh Daily</p>
-          <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "#020100", fontSize: "clamp(28px, 4vw, 46px)", lineHeight: 1.15, marginBottom: "16px" }}>Staff Favorites</h2>
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", opacity: 0.7, marginBottom: "8px" }}>Made Fresh Daily</p>
+          <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "#020100", fontSize: "clamp(28px, 4vw, 46px)", lineHeight: 1.15, marginBottom: "12px" }}>Staff Favorites</h2>
           <OrnamentDots />
         </div>
 
         {/* Cards grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "32px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
           {featuredFlavors.map((flavor) => (
-            <article key={flavor.id} style={{ background: flavor.bg, display: "flex", flexDirection: "column", overflow: "hidden", position: "relative" }}>
-              <div style={{ height: "224px", background: `linear-gradient(135deg, ${flavor.bg} 0%, #FDFFFC 100%)`, position: "relative" }} aria-hidden="true">
-                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(201,168,124,0.15)", fontSize: "64px" }}>🍦</div>
-                <div style={{ position: "absolute", inset: "auto 0 0 0", height: "80px", background: `linear-gradient(to bottom, transparent, ${flavor.bg})` }} />
+            <article key={flavor.id} style={{ background: flavor.bg, display: "flex", flexDirection: "column", overflow: "hidden", position: "relative", border: "1.2px solid #020100" }}>
+              <div style={{ height: "180px", background: `linear-gradient(135deg, ${flavor.bg} 0%, #FDFFFC 100%)`, position: "relative", borderBottom: "1.2px solid #020100" }} aria-hidden="true">
+                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(201,168,124,0.15)", fontSize: "52px" }}>🍦</div>
+                <div style={{ position: "absolute", inset: "auto 0 0 0", height: "60px", background: `linear-gradient(to bottom, transparent, ${flavor.bg})` }} />
               </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", padding: "28px", textAlign: "center" }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", padding: "24px", textAlign: "center" }}>
                 <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase" }}>{flavor.tagline}</p>
-                <h3 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "22px", lineHeight: 1.2 }}>{flavor.name}</h3>
-                <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "14px", lineHeight: 1.75, opacity: 0.8 }}>{flavor.description}</p>
+                <h3 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "20px", lineHeight: 1.2 }}>{flavor.name}</h3>
+                <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "14px", lineHeight: 1.6, opacity: 0.8 }}>{flavor.description}</p>
               </div>
             </article>
           ))}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <MenuButtons />
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "32px" }}>
+          <MenuButtons layout="row" />
         </div>
       </div>
     </section>
@@ -172,7 +172,7 @@ function FeaturedFlavors() {
 ═══════════════════════════════════════════════════════════ */
 function OurStoryTeaser() {
   return (
-    <section id="our-story" aria-label="Our story" style={{ background: "var(--color-base)", width: "100%", padding: "112px 24px" }}>
+    <section id="our-story" aria-label="Our story teaser" style={{ background: "var(--color-base)", width: "100%", padding: "80px 24px" }}>
       <div style={{ maxWidth: "1152px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "96px", alignItems: "center" }}>
 
         {/* Left: decorative year */}
@@ -206,17 +206,15 @@ function OurStoryTeaser() {
           <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "16px", lineHeight: 1.85, opacity: 0.9, marginBottom: "20px" }}>
             Day&rsquo;s Ice Cream has been a fixture of Ocean Grove since Ulysses S. Grant was president. Over 150 years, the shop has survived two World Wars, the Great Depression, and every summer in between, serving scoops to generations of families who made it their ritual.
           </p>
-          <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "16px", lineHeight: 1.85, opacity: 0.9, marginBottom: "40px" }}>
+          <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "16px", lineHeight: 1.85, opacity: 0.9, marginBottom: "20px" }}>
             Under new ownership, Day&rsquo;s enters its next chapter with deep reverence for what came before. The recipes, the corner, the name, all honored. What&rsquo;s new is the commitment to carry it forward with the same care it deserves.
           </p>
-          <OrnamentDots />
-          <div style={{ marginTop: "40px" }}>
+          <div style={{ marginTop: "12px" }}>
             <RippleButton variant="mint" href="/about">
               Read Our Full Story <span aria-hidden="true" style={{ marginLeft: "8px" }}>→</span>
             </RippleButton>
           </div>
         </div>
-
       </div>
     </section>
   );
@@ -227,57 +225,54 @@ function OurStoryTeaser() {
 ═══════════════════════════════════════════════════════════ */
 function HoursLocationStrip() {
   return (
-    <section id="hours-location" aria-label="Hours and location" style={{ background: "var(--color-surface)", width: "100%", padding: "80px 24px" }}>
-      <div style={{ maxWidth: "1024px", margin: "0 auto" }}>
-
+    <section id="hours-location" aria-label="Hours and location" style={{ background: "var(--color-surface)", width: "100%", padding: "56px 24px" }}>
+      <div style={{ maxWidth: "940px", margin: "0 auto" }}>
         {/* Header — centered */}
-        <div style={{ textAlign: "center", marginBottom: "56px" }}>
-          <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "16px" }}>Find Us</p>
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <p style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: "12px" }}>Find Us</p>
           <h2 style={{ fontFamily: "var(--font-rozha), Georgia, serif", color: "var(--color-cream)", fontSize: "clamp(26px, 3.5vw, 42px)" }}>Hours &amp; Location</h2>
         </div>
 
         {/* Two columns */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "56px" }}>
-
           {/* Hours */}
           <div>
-            <h3 style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "24px", display: "flex", alignItems: "center", gap: "8px" }}>
+            <h3 style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
               <ClockIcon /> Hours of Operation
             </h3>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0" }}>
               {hoursData.map((row) => (
-                <li key={row.days} style={{ display: "flex", justifyContent: "space-between", gap: "16px", borderBottom: "1px solid rgba(201,168,124,0.12)", paddingBottom: "16px", marginBottom: "16px" }}>
+                <li key={row.days} style={{ display: "flex", justifyContent: "space-between", gap: "16px", borderBottom: "1px solid rgba(201,168,124,0.12)", paddingBottom: "12px", marginBottom: "12px" }}>
                   <span style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "15px" }}>{row.days}</span>
                   <span style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "15px", opacity: 0.9 }}>{row.hours}</span>
                 </li>
               ))}
             </ul>
-            <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "13px", opacity: 0.7, fontStyle: "italic", marginTop: "8px" }}>
+            <p style={{ fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "13px", opacity: 0.7, fontStyle: "italic", marginTop: "4px" }}>
               * Hours subject to change. Seasonal schedule may vary.
             </p>
           </div>
 
           {/* Location */}
           <div>
-            <h3 style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "24px", display: "flex", alignItems: "center", gap: "8px" }}>
+            <h3 style={{ fontFamily: "var(--font-lora), serif", color: "var(--color-accent)", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
               <MapPinIcon /> Visit Us
             </h3>
-            <address style={{ fontStyle: "normal", fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "17px", lineHeight: 1.7, marginBottom: "12px" }}>
+            <address style={{ fontStyle: "normal", fontFamily: "var(--font-lora), serif", color: "var(--color-cream)", fontSize: "17px", lineHeight: 1.7, marginBottom: "8px" }}>
               48 Pitman Ave<br />Ocean Grove, NJ 07756
             </address>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "15px", opacity: 0.85, marginBottom: "40px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-lora), serif", color: "#020100", fontSize: "15px", opacity: 0.85, marginBottom: "32px" }}>
               <PhoneIcon /> (TBD) - coming soon
             </div>
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <RippleButton variant="primary" href="/contact">
+            <div style={{ display: "flex", gap: "12px", flexWrap: "nowrap", marginLeft: "-60px" }}>
+              <RippleButton variant="primary" href="/contact" style={{ padding: "16px 32px" }}>
                 Get Directions
               </RippleButton>
-              <RippleButton variant="outline" href="/employment">
+              <RippleButton variant="outline" href="/employment" style={{ padding: "16px 32px" }}>
                 Join Our Team
               </RippleButton>
             </div>
           </div>
-
         </div>
       </div>
     </section>

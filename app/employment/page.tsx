@@ -1,6 +1,6 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import EmploymentForm from "@/components/EmploymentForm";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import EmploymentForm from "@/components/forms/EmploymentForm";
 
 export default function EmploymentPage() {
   return (
